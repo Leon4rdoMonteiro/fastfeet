@@ -9,6 +9,7 @@ class Courier extends Model {
             },
             { sequelize }
         );
+        return this;
     }
 }
 
