@@ -9,6 +9,7 @@ import SessionController from './app/controllers/SessionController';
 import UserController from './app/controllers/UserController';
 import RecipientController from './app/controllers/RecipientController';
 import FileController from './app/controllers/FileController';
+import AdminController from './app/controllers/AdminController';
 
 const upload = multer(multerConfig);
 const routes = new Router();
@@ -18,6 +19,10 @@ routes.post('/sessions', SessionController.store);
 
 // AUTH MIDDLEWARE
 routes.use(authMiddleware);
+
+// ADMIN ROUTES
+routes.get('/admins', AdminController.index);
+routes.post('/admins', AdminController.store);
 
 // USER ROUTES
 routes.post('/users', UserController.store);
