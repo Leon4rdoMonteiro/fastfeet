@@ -23,6 +23,7 @@ routes.use(authMiddleware);
 // ADMIN ROUTES
 routes.get('/admins', AdminController.index);
 routes.post('/admins', AdminController.store);
+routes.put('/admins', AdminController.update);
 
 // USER ROUTES
 routes.post('/users', UserController.store);
