@@ -101,6 +101,16 @@ class AdminController {
             admin,
         });
     }
+
+    async destroy(req, res) {
+        const admin = await User.findOne({
+            where: { id: req.userId, admin: true },
+        });
+
+        await admin.destroy();
+
+        return res.send();
+    }
 }
 
 export default new AdminController();
