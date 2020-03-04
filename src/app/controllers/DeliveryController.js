@@ -6,7 +6,11 @@ import User from '../models/User';
 import Recipient from '../models/Recipient';
 import File from '../models/File';
 
-import Mail from '../../lib/Mail';
+import NewOrderMail from '../jobs/NewOrderMail';
+
+import Queue from '../../lib/Queue';
+
+import rangeHours from '../../utils/rangeHours';
 
 class DeliveryController {
     async show(req, res) {
@@ -40,9 +44,9 @@ class DeliveryController {
             product,
         } = req.body;
 
-        const recipientExists = await Recipient.findByPk(recipient_id);
+        const recipient = await Recipient.findByPk(recipient_id);
 
-        if (!recipientExists) {
+        if (!recipient) {
             return res.status(400).json({ error: 'Recipient not found' });
         }
 
@@ -62,10 +66,10 @@ class DeliveryController {
 
         const delivery = await Delivery.create(req.body);
 
-        await Mail.sendMail({
-            to: `${deliveryman.name} <${deliveryman.email}>`,
-            subject: 'Nova encomenda cadastrada!',
-            text: `Uma nova encomenda foi cadastrada para entrega do produto: ${product} e sua retirada já está disponível!`,
+        await Queue.add(NewOrderMail.key, {
+            recipient,
+            product,
+            deliveryman,
         });
 
         return res.json(delivery);
@@ -77,10 +81,10 @@ class DeliveryController {
         if (!isAfter(end_date)) {
             return res
                 .status(400)
-                .json({ error: 'End date needs should be after current date' });
+                .json({ error: 'End date must be after current date' });
         }
 
-        const deliveries = await Delivery.findOne({
+        const delivery = await Delivery.findOne({
             where: {
                 id: req.params.id,
                 canceled_at: null,
@@ -88,23 +92,9 @@ class DeliveryController {
             },
         });
 
-        const availableHours = [
-            '08:00',
-            '09:00',
-            '10:00',
-            '11:00',
-            '12:00',
-            '13:00',
-            '14:00',
-            '15:00',
-            '16:00',
-            '17:00',
-            '18:00',
-        ];
-
         parseISO(start_date);
 
-        const validHour = availableHours.map(time => {
+        const validHour = rangeHours.map(time => {
             const [hour, minute] = time.split(':');
             const value = setSeconds(
                 setMinutes(setHours(start_date, hour), minute),
@@ -112,7 +102,7 @@ class DeliveryController {
             );
         });
 
-        const response = await deliveries.update(req.body);
+        const response = await delivery.update(req.body);
 
         return res.json(response);
     }

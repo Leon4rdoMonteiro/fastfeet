@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import User from '../models/User';
 
 class CourierController {
-    async index(req, res) {
+    async index({ res }) {
         const couriers = await User.findAll({
             where: { admin: false },
         });

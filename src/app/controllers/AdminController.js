@@ -6,7 +6,7 @@ import User from '../models/User';
 import authConfig from '../../config/auth';
 
 class AdminController {
-    async index(req, res) {
+    async index({ res }) {
         const admins = await User.findAll({
             where: { admin: true },
             attributes: ['id', 'name', 'email'],
