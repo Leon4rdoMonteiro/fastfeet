@@ -29,6 +29,9 @@ routes.put('/recipients/:id', RecipientController.update);
 // FILES ROUTES
 routes.post('/files', upload.single('file'), FileController.store);
 
+// COURIER DELIVERY ROUTES
+routes.get('/deliveries', DeliveryController.show);
+
 routes.use(isAdminMiddleware);
 
 // ADMIN ROUTES
