@@ -30,7 +30,8 @@ routes.put('/recipients/:id', RecipientController.update);
 routes.post('/files', upload.single('file'), FileController.store);
 
 // COURIER DELIVERY ROUTES
-routes.get('/deliveries', DeliveryController.show);
+routes.get('/deliveries', DeliveryController.index);
+routes.put('/deliveries/:id', DeliveryController.update);
 
 routes.use(isAdminMiddleware);
 
