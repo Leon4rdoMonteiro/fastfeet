@@ -7,7 +7,7 @@ class NewOrderMail {
 
     async handle({ data }) {
         const { deliveryman, recipient, product } = data;
-        Mail.sendMail({
+        await Mail.sendMail({
             to: `${deliveryman.name} <${deliveryman.email}>`,
             subject: 'Nova retirada de produto disponível!',
             template: 'newOrder',
