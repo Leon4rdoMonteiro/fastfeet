@@ -25,10 +25,6 @@ routes.post('/sessions', SessionController.store);
 // AUTH MIDDLEWARE
 routes.use(authMiddleware);
 
-// RECIPIENT ROUTES
-routes.post('/recipients', RecipientController.store);
-routes.put('/recipients/:id', RecipientController.update);
-
 // FILES ROUTES
 routes.post('/files', upload.single('file'), FileController.store);
 
@@ -44,6 +40,11 @@ routes.put('/delivery/:id/delivery_withdrawal', WithdrawalController.update);
 routes.put('/delivery/:id/delivery_end', DeliveryEndController.update);
 
 routes.use(isAdminMiddleware);
+
+// RECIPIENT ROUTES
+routes.get('/recipients', RecipientController.index);
+routes.post('/recipients', RecipientController.store);
+routes.put('/recipients/:id', RecipientController.update);
 
 // ADMIN ROUTES
 routes.get('/admins', AdminController.index);

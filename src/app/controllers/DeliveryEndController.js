@@ -25,6 +25,12 @@ class DeliveryEndController {
             },
         });
 
+        if (delivery.end_date !== null) {
+            return res
+                .status(401)
+                .json({ error: 'Delivery has been finished' });
+        }
+
         if (!delivery) {
             return res.status(400).json({ error: 'Delivery does not exists' });
         }

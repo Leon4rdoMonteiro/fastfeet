@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
 import User from '../models/User';
+import File from '../models/File';
 
 class CourierController {
     async index({ res }) {
@@ -20,17 +21,29 @@ class CourierController {
             password: Yup.string()
                 .min(6)
                 .required(),
+            avatar_id: Yup.number().required(),
         });
 
         if (!(await schema.isValid(req.body))) {
             return res.status(400).json({ error: 'Validation fails' });
         }
+
+        const { avatar_id } = req.body;
+
         const courierExists = await User.findOne({
             where: { email: req.body.email },
         });
 
         if (courierExists) {
             return res.status(400).json({ error: 'User already exists' });
+        }
+
+        const isAvatar = await File.findOne({
+            where: { id: avatar_id, signature: false },
+        });
+
+        if (!isAvatar) {
+            return res.status(400).json({ error: 'Avatar does not exists' });
         }
 
         const { id, name, email } = await User.create(req.body);

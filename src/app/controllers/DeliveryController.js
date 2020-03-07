@@ -78,9 +78,10 @@ class DeliveryController {
         const problem = await DeliveryProblem.findByPk(req.params.id);
 
         if (!problem) {
-            return res
-                .status(400)
-                .json({ error: 'Delivery problem does not exists' });
+            return res.status(400).json({
+                error:
+                    'You need to register a problem before canceling delivery',
+            });
         }
 
         const delivery = await Delivery.findOne({
@@ -104,6 +105,10 @@ class DeliveryController {
                 .status(400)
                 .json({ error: 'The delivery cannot be canceled' });
         }
+
+        const problemExists = await DeliveryProblem.findOne({
+            where: { delivery_id: delivery.id },
+        });
 
         const deliveryman = await User.findOne({
             where: { id: req.userId },

@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import {
     startOfDay,
     endOfDay,
@@ -21,20 +20,28 @@ class WithdrawalController {
      */
 
     async update(req, res) {
-        const schema = Yup.object().shape({
-            start_date: Yup.number(),
-        });
-
-        if (!(await schema.isValid(req.body))) {
-            return res.status(400).json({ error: 'Validation fails' });
-        }
-
         const delivery = await Delivery.findOne({
             where: { id: req.params.id },
         });
 
         if (!delivery) {
             return res.status(400).json({ error: 'Delivery does not exists' });
+        }
+
+        if (delivery.canceled_at !== null) {
+            return res.status(401).json({ error: 'Delivery was canceled' });
+        }
+
+        if (delivery.end_date !== null) {
+            return res
+                .status(401)
+                .json({ error: 'Delivery has been finished' });
+        }
+
+        if (delivery.start_date !== null) {
+            return res
+                .status(401)
+                .json({ error: 'Delivery has been withdrawn' });
         }
 
         const orderAmount = await Delivery.count({
