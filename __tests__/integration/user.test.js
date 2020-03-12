@@ -29,10 +29,7 @@ describe('User', () => {
         const response = await request(app)
             .post('/admins')
             .send(create)
-            .set(
-                'Authorization',
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTgzOTYxNDg1LCJleHAiOjE1ODQ1NjYyODV9.zunlvziJIOu5HEtDGjSQFRd_pw5VL4NNJ-j5ENyaxnU'
-            );
+            .set('Authorization', 'Bearer Token');
 
         expect(response.body).toHaveProperty('user');
     });
@@ -44,18 +41,12 @@ describe('User', () => {
         await request(app)
             .post('/admins')
             .send(create)
-            .set(
-                'Authorization',
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTgzOTYxNDg1LCJleHAiOjE1ODQ1NjYyODV9.zunlvziJIOu5HEtDGjSQFRd_pw5VL4NNJ-j5ENyaxnU'
-            );
+            .set('Authorization', 'Bearer Token');
 
         const response = await request(app)
             .put('/admins')
             .send(update)
-            .set(
-                'Authorization',
-                'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTgzOTYxNDg1LCJleHAiOjE1ODQ1NjYyODV9.zunlvziJIOu5HEtDGjSQFRd_pw5VL4NNJ-j5ENyaxnU'
-            );
+            .set('Authorization', 'Bearer Token');
 
         expect(response.body).toHaveProperty('id');
     });

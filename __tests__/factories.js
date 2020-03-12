@@ -14,4 +14,9 @@ factory.define('UserUpdate', User, {
     email: faker.internet.email(),
 });
 
+factory.define('Auth', User, {
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+});
+
 export default factory;
