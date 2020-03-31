@@ -5,7 +5,6 @@ class FileController {
         const { originalname: name, filename: path } = req.file;
         const { signature } = req.body;
 
-        console.log(signature);
         const file = await File.create({
             name,
             path,
