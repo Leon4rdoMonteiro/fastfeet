@@ -1,2 +1,2 @@
 # FastFeet
-BootCamp GoStack 2019 - Aplicação para uma transportadora fictícia, o FastFeet.
+:truck: API developed for a fictional carrier, FastFeet in GoStack Bootcamp - Rocketseat
